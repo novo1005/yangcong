@@ -1,14 +1,12 @@
-import { Controller, Get, Render, Req } from '@nestjs/common';
-import type { Request } from 'express';
+import { Controller, Get, Res } from '@nestjs/common';
+import type { Response } from 'express';
+import { join } from 'path';
 
 @Controller()
 export class ViewController {
 
   @Get(['/', '*'])
-  @Render('index')
-  async render(@Req() req: Request): Promise<{ __platform__: string }>  {
-    return {
-      __platform__: JSON.stringify({}),
-    };
+  async serve(@Res() res: Response) {
+    res.sendFile(join(process.cwd(), 'dist/client', 'index.html'));
   }
 }
