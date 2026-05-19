@@ -1,0 +1,30 @@
+{
+  "id": "voc_doc_parser_1",
+  "pluginKey": "@official-plugins/ai-doc-parser",
+  "pluginVersion": "1.0.15",
+  "name": "VOC文档内容解析",
+  "description": "解析飞书妙记导出的文档文件，提取文本内容用于后续VOC结构化处理",
+  "icon": "",
+  "paramsSchema": {
+    "type": "object",
+    "properties": {
+      "voc_file": {
+        "format": "plugin-file-url",
+        "description": "飞书妙记导出的VOC文档文件",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "voc_file"
+    ]
+  },
+  "formValue": {
+    "fileUrl": "{{input.voc_file}}"
+  },
+  "createdAt": 1779177717393,
+  "updatedAt": 1779177717393,
+  "createdBy": 7618786560854494149
+}

@@ -1,0 +1,6 @@
+{
+  "name": "用研项目分类与洞察管理系统",
+  "description": "一个用于用研部门的项目分类、用户原声对比、AI总结及定量报告展示的高保真管理平台。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
