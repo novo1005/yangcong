@@ -26,7 +26,7 @@ import QuantitativeReport from '@/pages/QuantitativeReport/QuantitativeReport';
 import ProjectSummary from '@/pages/ProjectSummary/ProjectSummary';
 
 // --- Types ---
-type Brand = '洋葱' | '妙懂' | '学而思' | '万物指南' | 'NB虚拟实验室' | '赛先生';
+type Brand = '洋葱' | '妙懂' | '万物指南（物理十分通）' | 'NB虚拟实验室（NoBook）' | '学而思' | '叫叫' | '赛先生科学课' | '南开大学AI物理课';
 
 interface VOCItem {
   id: string;
@@ -104,10 +104,12 @@ async function apiExtractVocs(text: string): Promise<{ vocList: VOCItem[] }> {
 const BRANDS: { name: Brand; color: string; bg: string; border: string }[] = [
   { name: '洋葱', color: '#f97316', bg: '#fff7ed', border: '#fdba74' },
   { name: '妙懂', color: '#f59e0b', bg: '#fffbeb', border: '#fcd34d' },
+  { name: '万物指南（物理十分通）', color: '#22c55e', bg: '#f0fdf4', border: '#86efac' },
+  { name: 'NB虚拟实验室（NoBook）', color: '#a855f7', bg: '#faf5ff', border: '#d8b4fe' },
   { name: '学而思', color: '#3b82f6', bg: '#eff6ff', border: '#93c5fd' },
-  { name: '万物指南', color: '#22c55e', bg: '#f0fdf4', border: '#86efac' },
-  { name: 'NB虚拟实验室', color: '#a855f7', bg: '#faf5ff', border: '#d8b4fe' },
-  { name: '赛先生', color: '#ef4444', bg: '#fef2f2', border: '#fca5a5' },
+  { name: '叫叫', color: '#ec4899', bg: '#fdf2f8', border: '#f9a8d4' },
+  { name: '赛先生科学课', color: '#ef4444', bg: '#fef2f2', border: '#fca5a5' },
+  { name: '南开大学AI物理课', color: '#06b6d4', bg: '#ecfeff', border: '#67e8f9' },
 ];
 
 const DIMENSIONS: Dimension[] = [
@@ -166,7 +168,7 @@ const DEFAULT_PROJECTS: Project[] = [
     parsedVOCs: [
       { id: 'v1', brand: '洋葱', text: '主要是不想让孩子输在起跑线上，希望通过这种比较生动的形式让他先接触一下科学。', respondent: '家长#A01', sentiment: 'positive' },
       { id: 'v2', brand: '学而思', text: '学而思比较体系化，虽然有点难，但感觉对以后幼升小有帮助。', respondent: '家长#B12', sentiment: 'neutral' },
-      { id: 'v3', brand: '万物指南', text: '更看重体验，让孩子自己动手做实验，比单纯看视频好。', respondent: '家长#C05', sentiment: 'positive' },
+      { id: 'v3', brand: '万物指南（物理十分通）', text: '更看重体验，让孩子自己动手做实验，比单纯看视频好。', respondent: '家长#C05', sentiment: 'positive' },
     ]
   },
 ];
@@ -498,7 +500,7 @@ const Sidebar = ({
   );
 };
 
-const InsightsPage = ({ project, onParseFiles, onAddFiles }: { project: Project; onParseFiles: () => void; onAddFiles: () => void; }) => {
+const InsightsPage = ({ project, onParseFiles, onAddFiles, onDeleteFile }: { project: Project; onParseFiles: () => void; onAddFiles: () => void; onDeleteFile: (fileId: string) => void }) => {
   const [activeDimension, setActiveDimension] = React.useState(0);
   const [expandedSubDimensions, setExpandedSubDimensions] = React.useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = React.useState<Brand[]>(BRANDS.map(b => b.name));
@@ -554,13 +556,23 @@ const InsightsPage = ({ project, onParseFiles, onAddFiles }: { project: Project;
             <div className="flex flex-wrap gap-2">
               {project.files.map(file => {
                 const Icon = file.type === 'audio' ? Mic : file.type === 'video' ? Video : FileText;
-                return file.feishuLink ? (
-                  <a key={file.id} href={file.feishuLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <Icon size={14} /> {file.name} <ExternalLink size={12} className="text-gray-400" />
-                  </a>
-                ) : (
-                  <div key={file.id} className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700">
-                    <Icon size={14} /> {file.name}
+                return (
+                  <div key={file.id} className="relative group">
+                    {file.feishuLink ? (
+                      <a href={file.feishuLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                        <Icon size={14} /> {file.name} <ExternalLink size={12} className="text-gray-400" />
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700">
+                        <Icon size={14} /> {file.name}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => onDeleteFile(file.id)}
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                    >
+                      <X size={12} />
+                    </button>
                   </div>
                 );
               })}
@@ -779,6 +791,11 @@ const Home = () => {
     }
   };
 
+  const handleDeleteFile = (fileId: string) => {
+    setProjects(prev => prev.map(p => p.id === activeProject.id ? { ...p, files: p.files.filter(f => f.id !== fileId) } : p));
+    toast.success('文件已删除');
+  };
+
   const handleParseFiles = async () => {
     toast.info('请通过「添加文件」上传需要解析的文件');
     setIsAddFileDialogOpen(true);
@@ -794,7 +811,7 @@ const Home = () => {
           <AnimatePresence mode="wait">
             <motion.div key={`${activeProject.id}-${activeTab}`} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.3 }}>
               {activeTab === 'qualitative-insights' && (
-                <InsightsPage project={activeProject} onParseFiles={handleParseFiles} onAddFiles={() => setIsAddFileDialogOpen(true)} />
+                <InsightsPage project={activeProject} onParseFiles={handleParseFiles} onAddFiles={() => setIsAddFileDialogOpen(true)} onDeleteFile={handleDeleteFile} />
               )}
               {activeTab === 'qualitative-report' && (
                 <QualitativeReport project={activeProject} />

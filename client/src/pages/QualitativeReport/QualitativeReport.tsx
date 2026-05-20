@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
-type Brand = '洋葱' | '妙懂' | '学而思' | '万物指南' | 'NB虚拟实验室' | '赛先生';
+type Brand = '洋葱' | '妙懂' | '万物指南（物理十分通）' | 'NB虚拟实验室（NoBook）' | '学而思' | '叫叫' | '赛先生科学课' | '南开大学AI物理课';
 
 interface VOCItem {
   id: string;
@@ -34,10 +34,12 @@ interface Project {
 const BRANDS: { name: Brand; color: string; bg: string; border: string }[] = [
   { name: '洋葱', color: '#f97316', bg: '#fff7ed', border: '#fdba74' },
   { name: '妙懂', color: '#f59e0b', bg: '#fffbeb', border: '#fcd34d' },
+  { name: '万物指南（物理十分通）', color: '#22c55e', bg: '#f0fdf4', border: '#86efac' },
+  { name: 'NB虚拟实验室（NoBook）', color: '#a855f7', bg: '#faf5ff', border: '#d8b4fe' },
   { name: '学而思', color: '#3b82f6', bg: '#eff6ff', border: '#93c5fd' },
-  { name: '万物指南', color: '#22c55e', bg: '#f0fdf4', border: '#86efac' },
-  { name: 'NB虚拟实验室', color: '#a855f7', bg: '#faf5ff', border: '#d8b4fe' },
-  { name: '赛先生', color: '#ef4444', bg: '#fef2f2', border: '#fca5a5' },
+  { name: '叫叫', color: '#ec4899', bg: '#fdf2f8', border: '#f9a8d4' },
+  { name: '赛先生科学课', color: '#ef4444', bg: '#fef2f2', border: '#fca5a5' },
+  { name: '南开大学AI物理课', color: '#06b6d4', bg: '#ecfeff', border: '#67e8f9' },
 ];
 
 async function apiGenerateReport(vocItems: VOCItem[]): Promise<Record<string, BrandReport>> {
@@ -53,19 +55,18 @@ async function apiGenerateReport(vocItems: VOCItem[]): Promise<Record<string, Br
   return res.json();
 }
 
+function loadCachedReport(projectId: string): Record<string, BrandReport> | null {
+  try {
+    const saved = localStorage.getItem(`report_${projectId}`);
+    if (saved) return JSON.parse(saved);
+  } catch { /* ignore */ }
+  return null;
+}
+
 const QualitativeReport = ({ project }: { project: Project }) => {
-  const [report, setReport] = React.useState<Record<string, BrandReport> | null>(null);
+  const [report, setReport] = React.useState<Record<string, BrandReport> | null>(() => loadCachedReport(project.id));
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedBrands, setSelectedBrands] = React.useState<Brand[]>(BRANDS.map(b => b.name));
-
-  const cachedReportKey = `report_${project.id}`;
-
-  React.useEffect(() => {
-    const saved = localStorage.getItem(cachedReportKey);
-    if (saved) {
-      try { setReport(JSON.parse(saved)); } catch { /* ignore */ }
-    }
-  }, [project.id]);
 
   const handleGenerate = async () => {
     if (project.parsedVOCs.length === 0) {
@@ -76,7 +77,7 @@ const QualitativeReport = ({ project }: { project: Project }) => {
     try {
       const result = await apiGenerateReport(project.parsedVOCs);
       setReport(result);
-      localStorage.setItem(cachedReportKey, JSON.stringify(result));
+      localStorage.setItem(`report_${project.id}`, JSON.stringify(result));
       toast.success('报告生成成功');
     } catch (err) {
       toast.error(`生成失败: ${err instanceof Error ? err.message : '未知错误'}`);
@@ -86,7 +87,10 @@ const QualitativeReport = ({ project }: { project: Project }) => {
   };
 
   React.useEffect(() => {
-    if (!report && project.parsedVOCs.length > 0) {
+    const cached = loadCachedReport(project.id);
+    if (cached) {
+      setReport(cached);
+    } else if (project.parsedVOCs.length > 0) {
       handleGenerate();
     }
   }, [project.id]);
@@ -120,7 +124,7 @@ const QualitativeReport = ({ project }: { project: Project }) => {
 
       <div className="mb-6 bg-gray-50 rounded-xl p-4 flex items-center gap-4 flex-wrap">
         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">显示品牌</span>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           {BRANDS.map(brand => (
             <label key={brand.name} className="flex items-center gap-2 cursor-pointer group">
               <input
