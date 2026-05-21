@@ -1,4 +1,4 @@
-# VOC 洞察管理 (yongyan)
+# 用研项目归档 (yangcong)
 
 基于 NestJS + React + Tailwind CSS 的 VOC（用户之声）洞察管理平台。
 
