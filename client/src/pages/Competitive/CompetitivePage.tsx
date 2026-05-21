@@ -58,6 +58,22 @@ function groupByL1(insight: BrandInsight): Record<string, BrandInsightGroup[]> {
 
 // ── Cross-brand summary data (edit conclusions here) ─────────────────────────
 
+// Brand order: 洋葱 first, then alphabetically
+const BRAND_SUMMARY_ORDER = [
+  '洋葱', 'NB虚拟实验室', '万物指南', '妙懂', '学而思', '从小学物理', '叫叫', '南开大学AI物理课',
+];
+
+const BRAND_SUMMARIES: Record<string, string> = {
+  '洋葱':            '动画形式直观、校内同步是核心竞争力；大会员权益边界模糊引发"上当感"，权益透明化是最关键的信任修复点。',
+  'NB虚拟实验室':    '虚拟实验探索感强、终身制低价受认可；主科挤压下实际使用率极低，模拟与真实实验的落差是产品天然限制。',
+  '万物指南':        '化学内容的市场稀缺性是差异化壁垒，博物馆权威内容建立信任；学习产出难以量化是续费最大阻力。',
+  '妙懂':            'AR 是强记忆点，但"只玩 AR、不看内容"或购后搁置的风险真实存在；应试感知偏差抑制启蒙场景的新用户转化。',
+  '学而思':          '高校师资背书建立内容权威感，科学课打基础效果获认可；隐性附加收费与课程停运带来的体验断裂是严重信任损伤。',
+  '从小学物理':      '实验吸引力强、孩子自主完课率高是突出亮点；课程入口不易找、校内同步覆盖不足是主要使用障碍。',
+  '叫叫':            '打卡机制有效养成自主学习习惯，激励体系完善；隐性附加收费与定价不透明是核心信任损伤点。',
+  '南开大学AI物理课': '高校师资背书建立内容权威感，为初中物理提前打基础的定位清晰；不含在洋葱大会员权益内引发期望落差。',
+};
+
 const CROSS_BRAND_CONCLUSIONS: { text: string; color: string }[] = [
   {
     text: '兴趣启蒙是首要需求，但"能坚持用"才是真壁垒——家长购买的核心动机是让孩子建立对理科的兴趣而非应试，然而主科压力下使用频率普遍偏低，跨品牌都面临"买了不用"的留存难题。',
@@ -139,6 +155,33 @@ function CrossBrandOverview() {
                     {i + 1}
                   </div>
                   <p className="text-[12.5px] text-gray-600 leading-relaxed">{c.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Brand differentiation summaries */}
+          <div className="border-t border-gray-50 px-6 pt-4 pb-5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">品牌差异总结</p>
+            <div>
+              {BRAND_SUMMARY_ORDER.filter((b) => BRAND_SUMMARIES[b]).map((brand, idx) => (
+                <div
+                  key={brand}
+                  className={cn(
+                    'flex items-baseline gap-4 py-3',
+                    idx !== 0 && 'border-t border-gray-100',
+                  )}
+                >
+                  <div className="flex items-center gap-1.5 shrink-0 w-[116px]">
+                    <div
+                      className="w-4 h-4 rounded-[4px] flex items-center justify-center text-white text-[9px] font-bold shrink-0"
+                      style={{ backgroundColor: brandColor(brand) }}
+                    >
+                      {brand.charAt(0)}
+                    </div>
+                    <span className="text-[13px] font-semibold text-gray-800 whitespace-nowrap">{brand}</span>
+                  </div>
+                  <p className="text-[13px] text-gray-500 leading-relaxed">{BRAND_SUMMARIES[brand]}</p>
                 </div>
               ))}
             </div>
