@@ -21,6 +21,24 @@ const DIM_CONFIG: Record<Dimension, { color: string; tab: string }> = {
   产品体验: { color: '#2563EB', tab: 'border-blue-500 text-blue-600' },
 };
 
+// ── Brand colors ─────────────────────────────────────────────────────────────
+
+const BRAND_COLORS: Record<string, string> = {
+  '洋葱':            '#FF6B6B',
+  '妙懂':            '#EC4899',
+  '万物指南':        '#45B7D1',
+  'NB虚拟实验室':    '#6366F1',
+  '学而思':          '#F59E0B',
+  '叫叫':            '#34D399',
+  '赛先生科学课':    '#10B981',
+  '南开大学AI物理课':'#F97316',
+  '从小学物理':      '#4361EE',
+};
+
+function brandColor(brand: string) {
+  return BRAND_COLORS[brand] ?? '#A78BFA';
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /** Derive "访谈N·M / 城市A·城市B" from a list of evidence strings */
@@ -68,13 +86,13 @@ function QuoteItem({ text, color }: { text: string; color: string }) {
 
 // ── Brand card ────────────────────────────────────────────────────────────────
 
-function BrandCard({ entry, color }: { entry: QualBrandEntry; color: string }) {
+function BrandCard({ entry }: { entry: QualBrandEntry }) {
   const [expanded, setExpanded] = React.useState(false);
+  const bColor = brandColor(entry.brand);
 
   const allEvidence = entry.bullets.flatMap((b) => b.evidence);
   const sourceSummary = getSourceSummary(allEvidence);
 
-  // Show first 3 quotes collapsed, rest on expand
   const PREVIEW = 3;
   const shown = expanded ? allEvidence : allEvidence.slice(0, PREVIEW);
   const hasMore = allEvidence.length > PREVIEW;
@@ -82,46 +100,54 @@ function BrandCard({ entry, color }: { entry: QualBrandEntry; color: string }) {
   if (allEvidence.length === 0) return null;
 
   return (
-    <div className="bg-gray-50 rounded-2xl p-5">
-      {/* Card header */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="px-2.5 py-1 bg-white border border-gray-200 rounded-full text-[12px] font-medium text-gray-700">
-          {entry.brand}用户
-        </span>
-        {sourceSummary && (
-          <span className="text-[11px] text-gray-400">{sourceSummary}</span>
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      {/* Top brand color bar */}
+      <div className="h-1 w-full" style={{ backgroundColor: bColor }} />
+
+      <div className="p-5">
+        {/* Card header */}
+        <div className="flex items-center justify-between mb-4">
+          <span
+            className="px-2.5 py-1 rounded-full text-[12px] font-semibold text-white"
+            style={{ backgroundColor: bColor }}
+          >
+            {entry.brand}用户
+          </span>
+          {sourceSummary && (
+            <span className="text-[11px] text-gray-400">{sourceSummary}</span>
+          )}
+        </div>
+
+        {/* AI summary */}
+        <div className="mb-4 bg-gray-50 rounded-xl p-3.5">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <span className="text-[10px]" style={{ color: bColor }}>◆</span>
+            <span className="text-[11px] font-semibold text-gray-400">AI 总结</span>
+          </div>
+          <p className="text-[13px] font-semibold leading-relaxed" style={{ color: bColor }}>
+            {entry.subtitle}
+          </p>
+        </div>
+
+        {/* Evidence quotes */}
+        <div className="space-y-0">
+          {shown.map((e, i) => (
+            <QuoteItem key={i} text={e} color={bColor} />
+          ))}
+        </div>
+
+        {/* Expand / collapse */}
+        {hasMore && (
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="mt-3 flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            {expanded
+              ? <><ChevronDown size={11} />收起</>
+              : <><ChevronRight size={11} />展开全部 {allEvidence.length} 条原声</>}
+          </button>
         )}
       </div>
-
-      {/* AI summary */}
-      <div className="mb-4">
-        <div className="flex items-center gap-1.5 mb-1.5">
-          <span className="text-[10px]" style={{ color }}>◆</span>
-          <span className="text-[11px] font-semibold text-gray-400">AI 总结</span>
-        </div>
-        <p className="text-[13px] font-semibold leading-relaxed" style={{ color }}>
-          {entry.subtitle}
-        </p>
-      </div>
-
-      {/* Evidence quotes */}
-      <div className="space-y-0">
-        {shown.map((e, i) => (
-          <QuoteItem key={i} text={e} color={color} />
-        ))}
-      </div>
-
-      {/* Expand / collapse */}
-      {hasMore && (
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="mt-3 flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          {expanded
-            ? <><ChevronDown size={11} />收起</>
-            : <><ChevronRight size={11} />展开全部 {allEvidence.length} 条原声</>}
-        </button>
-      )}
     </div>
   );
 }
@@ -181,7 +207,7 @@ function SubDimSection({
       {!collapsed && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {visible.map((entry) => (
-            <BrandCard key={entry.brand} entry={entry} color={color} />
+            <BrandCard key={entry.brand} entry={entry} />
           ))}
         </div>
       )}
