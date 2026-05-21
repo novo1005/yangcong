@@ -58,10 +58,23 @@ function groupByL1(insight: BrandInsight): Record<string, BrandInsightGroup[]> {
 
 // ── Cross-brand summary data (edit conclusions here) ─────────────────────────
 
-const CROSS_BRAND_CONCLUSIONS: string[] = [
-  '（待填写）核心结论 1——跨品牌共性发现',
-  '（待填写）核心结论 2——市场机会或空白',
-  '（待填写）核心结论 3——家长决策的关键因素',
+const CROSS_BRAND_CONCLUSIONS: { text: string; color: string }[] = [
+  {
+    text: '兴趣启蒙是首要需求，但"能坚持用"才是真壁垒——家长购买的核心动机是让孩子建立对理科的兴趣而非应试，然而主科压力下使用频率普遍偏低，跨品牌都面临"买了不用"的留存难题。',
+    color: '#8B5CF6',
+  },
+  {
+    text: '产品发现高度依赖直播/社群口碑——NB、万物指南、从小学物理、叫叫等品牌用户均通过抖音直播间或学习社群发现产品，KOL 推荐是小众品牌触达家长的核心渠道，品牌主动曝光能力普遍不足。',
+    color: '#F59E0B',
+  },
+  {
+    text: '权益透明度是购买信任的关键门槛——洋葱大会员边界不清、叫叫隐性附加收费、学而思教具拉高门槛，均使家长产生"上当感"；反之，NB 终身制低价和万物指南"永久题库"则被高度认可。',
+    color: '#4361EE',
+  },
+  {
+    text: '孩子主动参与是续费最强信号——无论哪个品牌，家长续费的核心依据是"孩子愿意自己打开"；产品能否将初始兴趣转化为孩子的自主学习习惯，是留存决策的决定性因素。',
+    color: '#10B981',
+  },
 ];
 
 /** Compute dominant sentiment per brand × L1 from hardcoded insight data */
@@ -90,49 +103,59 @@ function CrossBrandOverview() {
   const brands = Object.keys(DEFAULT_COMPETITIVE_DATA).sort();
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+    <div className="rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6 bg-white">
       {/* Header */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center gap-2.5 px-5 py-4 text-left hover:bg-gray-50/50 transition-colors"
+        className="w-full flex items-center gap-2.5 px-6 py-4 text-left hover:bg-gray-50/60 transition-colors"
       >
-        <Layers size={14} className="text-[#4361EE] shrink-0" />
-        <span className="text-[13px] font-bold text-gray-900 flex-1">跨品牌洞察</span>
-        <span className="text-[11px] text-gray-400 mr-1">
+        <div className="w-6 h-6 rounded-lg bg-[#4361EE]/10 flex items-center justify-center shrink-0">
+          <Layers size={12} className="text-[#4361EE]" />
+        </div>
+        <span className="text-[14px] font-bold text-gray-900 flex-1">跨品牌洞察</span>
+        <span className="text-[11px] text-gray-400 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded-full mr-2">
           {brands.length} 个品牌 · {L1_ORDER.length} 个维度
         </span>
-        {open ? <ChevronDown size={13} className="text-gray-400" /> : <ChevronRight size={13} className="text-gray-400" />}
+        {open
+          ? <ChevronDown size={14} className="text-gray-300" />
+          : <ChevronRight size={14} className="text-gray-300" />}
       </button>
 
       {open && (
-        <div className="border-t border-gray-50 px-5 pb-5 space-y-5">
+        <>
           {/* Core conclusions */}
-          <div className="pt-4">
-            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-3">核心结论</p>
-            <div className="space-y-2.5">
+          <div className="border-t border-gray-50 px-6 pt-5 pb-4">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">核心结论</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {CROSS_BRAND_CONCLUSIONS.map((c, i) => (
-                <div key={i} className="flex gap-3">
-                  <span className="shrink-0 w-5 h-5 rounded-full bg-[#4361EE]/10 text-[#4361EE] text-[11px] font-bold flex items-center justify-center mt-0.5">
+                <div
+                  key={i}
+                  className="flex gap-3 p-3.5 rounded-xl border border-gray-100 bg-gray-50/60"
+                >
+                  <div
+                    className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-[11px] font-bold mt-0.5"
+                    style={{ backgroundColor: c.color }}
+                  >
                     {i + 1}
-                  </span>
-                  <p className="text-[13px] text-gray-600 leading-relaxed">{c}</p>
+                  </div>
+                  <p className="text-[12.5px] text-gray-600 leading-relaxed">{c.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Sentiment matrix table */}
-          <div>
-            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-3">品牌横向对比</p>
+          <div className="border-t border-gray-50 px-6 pt-4 pb-5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">品牌横向对比</p>
             <div className="overflow-x-auto">
-              <table className="text-left border-collapse">
+              <table className="text-left border-collapse w-full">
                 <thead>
                   <tr>
-                    <th className="text-[11px] font-medium text-gray-400 pb-2 pr-6 min-w-[120px]">品牌</th>
+                    <th className="text-[11px] font-medium text-gray-400 pb-3 pr-4 min-w-[130px]" />
                     {L1_ORDER.map((l1) => (
                       <th
                         key={l1}
-                        className="text-[11px] font-semibold pb-2 px-4 min-w-[90px]"
+                        className="text-[11px] font-bold pb-3 px-4 min-w-[100px] text-center"
                         style={{ color: L1_CONFIG[l1].color }}
                       >
                         {l1}
@@ -141,30 +164,36 @@ function CrossBrandOverview() {
                   </tr>
                 </thead>
                 <tbody>
-                  {brands.map((brand) => (
-                    <tr key={brand} className="border-t border-gray-50">
-                      <td className="py-2 pr-6">
-                        <div className="flex items-center gap-1.5">
+                  {brands.map((brand, idx) => (
+                    <tr
+                      key={brand}
+                      className={cn('border-t border-gray-50', idx % 2 === 0 ? '' : 'bg-gray-50/40')}
+                    >
+                      <td className="py-2.5 pr-4">
+                        <div className="flex items-center gap-2">
                           <div
                             className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[9px] font-bold shrink-0"
                             style={{ backgroundColor: brandColor(brand) }}
                           >
                             {brand.charAt(0)}
                           </div>
-                          <span className="text-[12px] text-gray-700 whitespace-nowrap">{brand}</span>
+                          <span className="text-[12px] font-medium text-gray-700 whitespace-nowrap">{brand}</span>
                         </div>
                       </td>
                       {L1_ORDER.map((l1) => {
                         const s = SENTIMENT_MATRIX[brand]?.[l1];
                         if (!s) return (
-                          <td key={l1} className="py-2 px-4">
-                            <span className="text-[11px] text-gray-200">—</span>
+                          <td key={l1} className="py-2.5 px-4 text-center">
+                            <span className="text-gray-200 text-[12px]">—</span>
                           </td>
                         );
                         const sc = SENTIMENT_CONFIG[s];
                         return (
-                          <td key={l1} className="py-2 px-4">
-                            <span className={cn('inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full border font-medium', sc.tag)}>
+                          <td key={l1} className="py-2.5 px-4 text-center">
+                            <span className={cn(
+                              'inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full border font-medium',
+                              sc.tag,
+                            )}>
                               <span className={cn('w-1.5 h-1.5 rounded-full shrink-0', sc.dot)} />
                               {sc.label}
                             </span>
@@ -177,7 +206,7 @@ function CrossBrandOverview() {
               </table>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
