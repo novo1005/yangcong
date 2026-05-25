@@ -9,14 +9,14 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(220 14% 14%);
+  --background: hsl(40 33% 98%);   /* #FEFDF9 warm white */
+  --foreground: hsl(0 0% 16%);
   --card: hsl(0 0% 100%);
-  --card-foreground: hsl(220 14% 14%);
+  --card-foreground: hsl(0 0% 16%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(220 14% 14%);
-  --primary: hsl(230 83% 60%);
-  --primary-foreground: hsl(220 14% 98%);
+  --primary: hsl(14 100% 57%);    /* #FF5722 orange */
+  --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(220 14% 96%);
   --secondary-foreground: hsl(220 14% 14%);
   --muted: hsl(220 14% 96%);
@@ -33,7 +33,7 @@
   --warning-foreground: hsl(33 100% 96%);
   --border: hsl(220 14% 89%);
   --input: hsl(220 14% 89%);
-  --ring: hsl(221 83% 53%);
+  --ring: hsl(14 100% 57%);
   --chart-1: hsl(222 82% 56%);
   --chart-2: hsl(174 77% 46%);
   --chart-3: hsl(46 100% 52%);
@@ -41,15 +41,15 @@
   --chart-5: hsl(292 54% 76%);
   --sidebar: hsl(220 14% 96%);
   --sidebar-foreground: hsl(220 14% 14%);
-  --sidebar-primary: hsl(221 83% 53%);
-  --sidebar-primary-foreground: hsl(220 14% 98%);
+  --sidebar-primary: hsl(14 100% 57%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
   --sidebar-accent: hsl(222 100% 94%);
   --sidebar-accent-foreground: hsl(221 83% 53%);
   --sidebar-border: hsl(220 14% 89%);
-  --sidebar-ring: hsl(221 83% 53%);
+  --sidebar-ring: hsl(14 100% 57%);
 
   /* Computed borders using hsl relative color syntax */
-  --primary-border: hsl(from hsl(221 83% 53%) h s calc(l + var(--opaque-button-border-intensity)));
+  --primary-border: hsl(from hsl(14 100% 57%) h s calc(l + var(--opaque-button-border-intensity)));
   --secondary-border: hsl(from hsl(220 14% 96%) h s calc(l + var(--opaque-button-border-intensity)));
   --destructive-border: hsl(from hsl(2 84% 62%) h s calc(l + var(--opaque-button-border-intensity)));
   --accent-border: hsl(from hsl(220 14% 96%) h s calc(l + var(--opaque-button-border-intensity)));

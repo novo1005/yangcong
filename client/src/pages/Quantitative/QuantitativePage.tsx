@@ -24,7 +24,7 @@ export default function QuantitativePage() {
     <div className="p-8 max-w-2xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-2 mb-2">
-        <BarChart3 size={20} className="text-[#4361EE]" />
+        <BarChart3 size={20} className="text-[#FF5722]" />
         <h2 className="text-[22px] font-bold text-gray-900">定量报告</h2>
       </div>
       <p className="text-[13px] text-gray-400 mb-8">上传问卷或数据表，生成定量分析报告</p>
@@ -50,12 +50,12 @@ export default function QuantitativePage() {
         className={`
           border-2 border-dashed rounded-2xl p-12 flex flex-col items-center justify-center cursor-pointer transition-all
           ${dragging
-            ? 'border-[#4361EE] bg-[#4361EE]/5'
-            : 'border-gray-200 hover:border-[#4361EE]/50 hover:bg-gray-50'}
+            ? 'border-[#FF5722] bg-[#FF5722]/5'
+            : 'border-gray-200 hover:border-[#FF5722]/50 hover:bg-gray-50'}
         `}
       >
-        <div className="w-14 h-14 bg-[#4361EE]/10 rounded-2xl flex items-center justify-center mb-4">
-          <Upload size={24} className="text-[#4361EE]" />
+        <div className="w-14 h-14 bg-[#FF5722]/10 rounded-2xl flex items-center justify-center mb-4">
+          <Upload size={24} className="text-[#FF5722]" />
         </div>
         <p className="text-[15px] font-semibold text-gray-700 mb-1">上传定量数据文件</p>
         <p className="text-[12px] text-gray-400">支持 .xlsx / .xls / .csv，可拖拽上传</p>

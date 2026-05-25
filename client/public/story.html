@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家长们在买一个说不出口的东西 · 洋葱学园</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FEFDF9; --bg2:#F7F5EF; --bg3:#FFF8F0;
+  --tx:#2A2A2A; --sub:#555; --mu:#999;
+  --bd:#DDD8CE; --card:#fff;
+  --o:#FF5722; --t:#3DBFBF; --y:#F5C518;
+  --r:#FF4D8B; --g:#52C278; --b:#5B8FED; --v:#A78BFA;
+  --shadow: 3px 4px 0 rgba(0,0,0,.08);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--tx);
+  font-family:-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  overflow-x:hidden; line-height:1.6;
+}
+
+/* Grid paper bg */
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,0,0,.03) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.03) 1px, transparent 1px);
+  background-size:26px 26px;
+}
+section,header,footer,.ticker-wrap{position:relative;z-index:1}
+
+/* ── Progress ─────────────────────────────────── */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--o);z-index:999;box-shadow:0 0 6px rgba(255,87,34,.4)}
+
+/* ── Nav dots ─────────────────────────────────── */
+#nav{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.15);cursor:pointer;transition:all .3s;position:relative}
+.dot.on{background:var(--o);box-shadow:0 0 0 3px rgba(255,87,34,.2);transform:scale(1.2)}
+.dot::after{content:attr(data-tip);position:absolute;right:18px;top:50%;transform:translateY(-50%);background:var(--tx);color:#fff;font-size:11px;white-space:nowrap;padding:4px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s}
+.dot:hover::after{opacity:1}
+
+/* ── Reveal ───────────────────────────────────── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ── Wrap ─────────────────────────────────────── */
+.wrap{max-width:860px;margin:0 auto;padding:80px 32px}
+
+/* ── Section labels ───────────────────────────── */
+.ch-n{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:var(--o);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ch-n::before{content:'';display:inline-block;width:18px;height:2.5px;background:var(--o);border-radius:2px}
+.ch-h{font-size:clamp(26px,4vw,44px);font-weight:900;line-height:1.25;letter-spacing:-.5px;margin-bottom:14px}
+.ch-s{font-size:16px;color:var(--sub);line-height:1.85;margin-bottom:44px;max-width:580px}
+
+.o{color:var(--o)}.t{color:var(--t)}.y{color:var(--y)}.r{color:var(--r)}.g{color:var(--g)}.b{color:var(--b)}
+.ybg{background:rgba(245,197,24,.15);padding:1px 6px;border-radius:4px}
+.obg{background:rgba(255,87,34,.1);padding:1px 6px;border-radius:4px}
+
+/* ── Wavy separator ───────────────────────────── */
+.sep{overflow:hidden;line-height:0}
+.sep svg{display:block;width:100%}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#s0{
+  min-height:100vh;
+  background:linear-gradient(180deg,#FFF4EE 0%,#FEFDF9 70%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center; padding:60px 32px 0; overflow:hidden;
+}
+
+/* Floating stars */
+.st{position:absolute;font-size:22px;animation:fl 3s ease-in-out infinite;pointer-events:none;user-select:none}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(15deg)}}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,87,34,.1);
+  border:2px dashed rgba(255,87,34,.4);
+  color:var(--o);font-size:11px;font-weight:800;
+  letter-spacing:2.5px;padding:7px 20px;border-radius:100px;
+  margin-bottom:32px;text-transform:uppercase;
+}
+.hero-tag::before{content:'🌟';font-size:14px}
+
+.hero-h{
+  font-size:clamp(38px,7vw,68px);
+  font-weight:900;line-height:1.15;
+  letter-spacing:-2px;margin-bottom:20px;
+}
+.hero-h .hl{
+  color:var(--o);position:relative;display:inline-block;
+}
+.hero-h .hl::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;height:7px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M2 5 Q50 1 100 5 Q150 9 198 5' stroke='%23FF5722' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+  background-size:200px 8px;
+}
+
+.hero-s{font-size:17px;color:var(--sub);max-width:460px;margin:0 auto 48px;line-height:1.8}
+
+.stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+.stat{text-align:center;padding:20px 36px}
+.stat+.stat{border-left:2px dashed var(--bd)}
+.stn{font-size:clamp(40px,6vw,56px);font-weight:900;color:var(--o);letter-spacing:-2px;line-height:1}
+.stu{font-size:12px;color:var(--mu);margin-top:6px}
+
+/* Orange ticker strip */
+.ticker-wrap{width:100%;overflow:hidden;background:var(--o);padding:12px 0;position:relative;z-index:1}
+.ticker{display:flex;gap:0;width:max-content;animation:tick 44s linear infinite}
+.ticker:hover{animation-play-state:paused}
+.ti{display:flex;align-items:center;gap:10px;padding:0 30px;white-space:nowrap;font-size:13px;color:rgba(255,255,255,.92);font-style:italic}
+.ti-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.scroll-c{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--mu);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:8px;animation:bob 2s ease-in-out infinite}
+.arr{width:18px;height:18px;border-right:2.5px solid var(--mu);border-bottom:2.5px solid var(--mu);transform:rotate(45deg)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* ══════════════════════════════════════════
+   S1 · 真实动机
+══════════════════════════════════════════ */
+#s1{background:var(--bg)}
+
+/* Chat bubbles - light sticker style */
+.bubbles{display:flex;flex-direction:column;gap:20px;margin:36px 0}
+.brow{display:flex;gap:14px;align-items:flex-start}
+.brow.right{flex-direction:row-reverse}
+.av{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;
+  box-shadow:2px 3px 0 rgba(0,0,0,.12);
+}
+.bmsg{
+  background:var(--card);
+  border:2px solid var(--bd);
+  border-radius:6px 18px 18px 18px;
+  padding:14px 18px;max-width:76%;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.brow.right .bmsg{border-radius:18px 6px 18px 18px}
+.b-brand{
+  font-size:10px;font-weight:800;letter-spacing:1px;
+  text-transform:uppercase;padding:3px 9px;border-radius:100px;
+  margin-bottom:8px;display:inline-block;color:#fff;
+}
+.b-text{font-size:14px;line-height:1.75;color:var(--sub);font-style:italic}
+.b-src{font-size:11px;color:var(--mu);margin-top:7px}
+
+/* Tension card */
+.tension{
+  display:flex;align-items:stretch;
+  margin:40px 0;border-radius:20px;overflow:hidden;
+  border:2px solid var(--bd);
+  box-shadow:var(--shadow);
+}
+.ts{flex:1;padding:28px 24px;text-align:center;background:var(--card)}
+.ts:first-child{border-right:2px dashed var(--bd)}
+.ts-ico{font-size:36px;margin-bottom:10px}
+.ts-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mu);margin-bottom:8px}
+.ts-v{font-size:clamp(18px,2.5vw,24px);font-weight:900;line-height:1.3}
+.ts-d{font-size:13px;color:var(--sub);line-height:1.7;margin-top:10px}
+.ts-arr{color:var(--mu);font-size:24px;display:flex;align-items:center;padding:0 4px;background:var(--card);border-right:2px dashed var(--bd)}
+@media(max-width:560px){.tension{flex-direction:column}.ts:first-child{border-right:none;border-bottom:2px dashed var(--bd)}.ts-arr{display:none}}
+
+/* Insight box */
+.ibox{border-radius:16px;padding:20px 24px;margin-top:28px}
+.ibox.teal{background:rgba(61,191,191,.08);border:2px solid rgba(61,191,191,.3)}
+.ibox.yellow{background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.4)}
+.ibox.rose{background:rgba(255,77,139,.07);border:2px solid rgba(255,77,139,.25)}
+.ibox.orange{background:rgba(255,87,34,.08);border:2px solid rgba(255,87,34,.3)}
+.il{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:10px}
+.ibox.teal .il{color:var(--t)}.ibox.yellow .il{color:#A07800}
+.ibox.rose .il{color:var(--r)}.ibox.orange .il{color:var(--o)}
+.ib{font-size:15px;line-height:1.85;color:var(--sub)}
+
+/* ══════════════════════════════════════════
+   S2 · 购买决策
+══════════════════════════════════════════ */
+#s2{background:var(--bg2)}
+
+.brand-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.bt{
+  padding:7px 18px;border-radius:100px;
+  border:2px solid var(--bd);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .2s;color:var(--sub);background:var(--card);
+  box-shadow:2px 2px 0 rgba(0,0,0,.06);
+}
+.bt:hover{transform:translateY(-2px);box-shadow:3px 4px 0 rgba(0,0,0,.1)}
+.bt.on{color:#fff;border-color:transparent;transform:translateY(-2px);box-shadow:3px 4px 0 rgba(0,0,0,.15)}
+.bt[data-brand="all"].on{background:var(--o)}
+.bt[data-brand="洋葱"].on{background:#4361EE}
+.bt[data-brand="NB"].on{background:#6366F1}
+.bt[data-brand="学而思"].on{background:#F59E0B}
+.bt[data-brand="万物"].on{background:var(--t)}
+.bt[data-brand="妙懂"].on{background:var(--r)}
+
+.bcard-grid{display:flex;flex-direction:column;gap:16px}
+.bcard{
+  background:var(--card);border:2px solid var(--bd);border-radius:18px;
+  overflow:hidden;transition:all .25s;box-shadow:var(--shadow);
+}
+.bcard:hover{transform:translateY(-2px);box-shadow:4px 6px 0 rgba(0,0,0,.1)}
+.bc-top{padding:20px 22px 0}
+.bc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.bc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.bc-name{font-size:15px;font-weight:800}
+.bc-tag{font-size:10px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:100px;text-transform:uppercase;color:#fff;margin-left:auto}
+.bc-buy-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);margin-bottom:5px}
+.bc-buy{font-size:14px;color:var(--t);font-weight:600;line-height:1.65;margin-bottom:14px}
+.bc-quotes{border-top:2px dashed var(--bd);padding:16px 22px;background:rgba(255,77,139,.03)}
+.bc-ql{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);margin-bottom:10px}
+.bc-q{font-size:13px;color:#C4004A;line-height:1.75;font-style:italic}
+.bc-q+.bc-q{margin-top:12px;padding-top:12px;border-top:1px dashed var(--bd)}
+.bc-qs{font-size:11px;color:var(--mu);margin-top:4px}
+.extra{display:none}.extra.open{display:block}
+.more-btn{
+  width:100%;border:none;background:rgba(0,0,0,.03);
+  border-top:2px dashed var(--bd);padding:11px 22px;
+  text-align:left;font-size:12px;color:var(--mu);cursor:pointer;
+  font-family:inherit;transition:all .2s;
+}
+.more-btn:hover{background:rgba(0,0,0,.06);color:var(--tx)}
+
+/* ══════════════════════════════════════════
+   S3 · 痛点
+══════════════════════════════════════════ */
+#s3{background:var(--bg)}
+
+.big-pain{
+  background:linear-gradient(135deg,#FFF0F5 0%,#FFE8EF 100%);
+  border:2px solid rgba(255,77,139,.3);
+  border-radius:24px;padding:40px;text-align:center;margin:36px 0;
+  box-shadow:4px 5px 0 rgba(255,77,139,.1);
+}
+.bp-lbl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--r);font-weight:800;margin-bottom:18px}
+.bp-t{font-size:clamp(20px,3vw,30px);font-weight:900;line-height:1.5;color:#C4004A}
+.bp-n{font-size:13px;color:var(--mu);margin-top:12px}
+
+.qwall{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:32px 0}
+@media(max-width:600px){.qwall{grid-template-columns:1fr}}
+.qw{
+  background:var(--card);border:2px solid var(--bd);border-radius:16px;
+  padding:18px 20px;box-shadow:var(--shadow);
+  transition:transform .2s;cursor:default;
+}
+.qw:hover{transform:rotate(-1.5deg) scale(1.01)}
+.qw-brand{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;margin-bottom:8px}
+.qw-t{font-size:14px;color:var(--sub);line-height:1.75;font-style:italic;margin-bottom:8px}
+.qw-s{font-size:11px;color:var(--mu)}
+
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.ptag{
+  background:var(--card);border:2px solid rgba(255,77,139,.3);
+  color:#C4004A;padding:7px 15px;border-radius:100px;
+  font-size:13px;font-weight:600;
+  box-shadow:2px 2px 0 rgba(255,77,139,.15);
+}
+
+/* ══════════════════════════════════════════
+   S4 · 洋葱机会
+══════════════════════════════════════════ */
+#s4{background:var(--bg3)}
+
+.ev-q{
+  background:var(--card);border:2px solid var(--bd);
+  border-left:4px solid var(--g);border-radius:0 16px 16px 0;
+  padding:18px 22px;margin-top:14px;
+  box-shadow:var(--shadow);
+}
+.ev-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);font-weight:800;margin-bottom:10px}
+.ev-qt{font-size:14px;color:var(--sub);line-height:1.75;font-style:italic}
+.ev-qs{font-size:11px;color:var(--mu);margin-top:7px}
+
+.opp-card{
+  background:linear-gradient(135deg,#FFF5F0 0%,#FFEDE4 100%);
+  border:2px solid rgba(255,87,34,.25);
+  border-radius:22px;padding:36px;margin-top:36px;
+  box-shadow:4px 5px 0 rgba(255,87,34,.1);
+  position:relative;overflow:hidden;
+}
+.opp-h{font-size:clamp(18px,2.5vw,24px);font-weight:900;line-height:1.5;margin-bottom:16px}
+.opp-b{font-size:15px;color:var(--sub);line-height:1.85}
+
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+@media(max-width:640px){.pillars{grid-template-columns:1fr}}
+.pillar{
+  background:var(--card);border:2px solid var(--bd);border-radius:18px;
+  padding:28px 20px;text-align:center;
+  box-shadow:var(--shadow);transition:all .2s;
+}
+.pillar:hover{transform:translateY(-4px) rotate(-1deg);box-shadow:5px 8px 0 rgba(0,0,0,.1)}
+.p-ico{font-size:40px;margin-bottom:12px}
+.p-nm{font-size:20px;font-weight:900;color:var(--o);margin-bottom:8px}
+.p-d{font-size:13px;color:var(--sub);line-height:1.7}
+
+.honest{
+  background:#FFFBF0;border:2px dashed rgba(245,197,24,.6);
+  border-radius:18px;padding:26px;margin-top:32px;
+}
+.honest-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#A07800;font-weight:800;margin-bottom:14px}
+.honest-q{font-size:14px;color:var(--sub);line-height:1.8;font-style:italic}
+.honest-q+.honest-q{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(245,197,24,.4)}
+.honest-qs{font-size:11px;color:var(--mu);margin-top:4px}
+
+/* ══════════════════════════════════════════
+   S5 · 下一步
+══════════════════════════════════════════ */
+#s5{background:var(--bg2)}
+
+.actions{display:flex;flex-direction:column;gap:16px;margin-top:36px}
+.ai{
+  display:flex;gap:20px;align-items:flex-start;
+  background:var(--card);border:2px solid var(--bd);border-radius:18px;
+  padding:24px;box-shadow:var(--shadow);transition:all .2s;
+}
+.ai:hover{transform:translateX(5px);border-color:rgba(255,87,34,.3);box-shadow:4px 5px 0 rgba(255,87,34,.12)}
+.an{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:var(--o);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:18px;
+  box-shadow:2px 3px 0 rgba(255,87,34,.3);
+}
+.ah{font-size:15px;font-weight:800;margin-bottom:6px}
+.ab{font-size:13px;color:var(--sub);line-height:1.75}
+.ai-q{
+  font-size:12px;color:#A07800;line-height:1.7;font-style:italic;
+  margin-top:10px;padding-top:10px;
+  border-top:1px dashed rgba(245,197,24,.5);
+}
+
+/* ── Audio player ── */
+.play-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;background:var(--o);color:#fff;
+  border:none;border-radius:20px;font-size:11px;font-weight:700;
+  cursor:pointer;margin-top:8px;
+  box-shadow:2px 3px 0 rgba(255,87,34,.3);
+  transition:transform .15s,background .2s,box-shadow .15s;
+  font-family:inherit;letter-spacing:.3px;
+}
+.play-btn:hover{transform:scale(1.07);box-shadow:3px 4px 0 rgba(255,87,34,.35)}
+.play-btn:active{transform:scale(.97)}
+.play-btn.playing{background:#52C278;box-shadow:2px 3px 0 rgba(82,194,120,.4)}
+.play-btn .wv{display:inline-flex;gap:2px;align-items:center;height:13px}
+.play-btn .wv span{
+  display:block;width:2px;height:3px;background:#fff;
+  border-radius:2px;animation:wv .55s ease-in-out infinite alternate;
+}
+.play-btn .wv span:nth-child(2){animation-delay:.12s}
+.play-btn .wv span:nth-child(3){animation-delay:.24s}
+@keyframes wv{from{height:3px}to{height:11px}}
+
+/* Footer */
+footer{
+  text-align:center;padding:48px 32px;
+  background:var(--card);border-top:2px dashed var(--bd);
+  position:relative;z-index:1;
+}
+.ft{font-size:18px;font-weight:900;color:var(--o);margin-bottom:8px}
+footer p{font-size:12px;color:var(--mu)}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<nav id="nav">
+  <div class="dot on" data-tip="开篇"    onclick="go(0)"></div>
+  <div class="dot"    data-tip="真实动机" onclick="go(1)"></div>
+  <div class="dot"    data-tip="购买决策" onclick="go(2)"></div>
+  <div class="dot"    data-tip="共性痛点" onclick="go(3)"></div>
+  <div class="dot"    data-tip="洋葱机会" onclick="go(4)"></div>
+  <div class="dot"    data-tip="下一步"   onclick="go(5)"></div>
+</nav>
+
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="s0">
+  <!-- Floating decorative stars -->
+  <span class="st" style="top:12%;left:8%;animation-delay:0s">⭐</span>
+  <span class="st" style="top:18%;right:10%;animation-delay:.6s;font-size:18px">✨</span>
+  <span class="st" style="top:70%;left:6%;animation-delay:1.1s;font-size:16px">⭐</span>
+  <span class="st" style="top:75%;right:8%;animation-delay:1.7s">✨</span>
+  <span class="st" style="top:40%;left:3%;animation-delay:.3s;font-size:14px">★</span>
+  <span class="st" style="top:55%;right:5%;animation-delay:1.4s;font-size:14px">★</span>
+
+  <!-- Hero illustration: simple SVG kids -->
+  <div style="position:absolute;top:8%;right:4%;opacity:.18;pointer-events:none">
+    <svg width="160" height="140" viewBox="0 0 160 140" fill="none">
+      <!-- blob -->
+      <ellipse cx="80" cy="80" rx="65" ry="50" fill="#3DBFBF" opacity=".3"/>
+      <!-- child 1 -->
+      <circle cx="55" cy="45" r="15" fill="#FFD23F" stroke="#2A2A2A" stroke-width="2"/>
+      <rect x="45" y="60" width="20" height="30" rx="5" fill="#FF5722" stroke="#2A2A2A" stroke-width="2"/>
+      <line x1="45" y1="65" x2="30" y2="80" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="65" y1="65" x2="80" y2="80" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="50" y1="90" x2="45" y2="115" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="90" x2="65" y2="115" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <!-- child 2 -->
+      <circle cx="110" cy="48" r="14" fill="#FFB3C6" stroke="#2A2A2A" stroke-width="2"/>
+      <rect x="100" y="62" width="20" height="28" rx="5" fill="#5B8FED" stroke="#2A2A2A" stroke-width="2"/>
+      <line x1="100" y1="67" x2="85" y2="82" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="120" y1="67" x2="132" y2="78" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="105" y1="90" x2="100" y2="115" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="115" y1="90" x2="120" y2="115" stroke="#2A2A2A" stroke-width="2" stroke-linecap="round"/>
+      <!-- holding hands -->
+      <path d="M80 80 Q82 78 85 82" stroke="#2A2A2A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner" style="position:relative;z-index:1;max-width:680px">
+    <div class="hero-tag">洋葱学园 · 竞品用户研究 · 2025</div>
+    <h1 class="hero-h">家长们在买一个<br><span class="hl">说不出口</span>的东西</h1>
+    <p class="hero-s">9个竞品，6组深度访谈，194条用户原声，<br>一个被所有人忽略的核心需求</p>
+    <div class="stats">
+      <div class="stat"><div class="stn cnt" data-t="9">0</div><div class="stu">竞品品牌</div></div>
+      <div class="stat"><div class="stn cnt" data-t="6">0</div><div class="stu">深度访谈</div></div>
+      <div class="stat"><div class="stn cnt" data-t="194">0</div><div class="stu">用户原声</div></div>
+    </div>
+  </div>
+
+  <!-- Orange quote ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ti"><span class="ti-dot"></span>「我就给他说的是帮你看嘛，看着玩。诶，他就没那么抵触。」</span>
+      <span class="ti"><span class="ti-dot"></span>「化学好像市面上好像只有它有……好像有个化学好像」</span>
+      <span class="ti"><span class="ti-dot"></span>「还是不想让他之后对理科失去兴趣，所以抓住从小应该掌握这个理科的黄金期」</span>
+      <span class="ti"><span class="ti-dot"></span>「买了小四门都买了，道法也买了，但孩子也不爱看，我也没去看」</span>
+      <span class="ti"><span class="ti-dot"></span>「他每天他都会刷。他好像特别喜欢看那实验男做实验。他当成趣味里边学知识了」</span>
+      <span class="ti"><span class="ti-dot"></span>「他是正儿八经的讲，很正式，孩子看着好像没有那么有感觉，就是让他学习了的那种感觉」</span>
+      <span class="ti"><span class="ti-dot"></span>「就是有一种上当的感觉……你，我买你这个洋葱也是花了好几千的」</span>
+      <span class="ti"><span class="ti-dot"></span>「我想知道他到底学了什么？学到了什么？学了多少？能记住什么？」</span>
+      <span class="ti"><span class="ti-dot"></span>「我就给他说的是帮你看嘛，看着玩。诶，他就没那么抵触。」</span>
+      <span class="ti"><span class="ti-dot"></span>「化学好像市面上好像只有它有……好像有个化学好像」</span>
+      <span class="ti"><span class="ti-dot"></span>「还是不想让他之后对理科失去兴趣，所以抓住从小应该掌握这个理科的黄金期」</span>
+      <span class="ti"><span class="ti-dot"></span>「买了小四门都买了，道法也买了，但孩子也不爱看，我也没去看」</span>
+      <span class="ti"><span class="ti-dot"></span>「他每天他都会刷。他好像特别喜欢看那实验男做实验。他当成趣味里边学知识了」</span>
+      <span class="ti"><span class="ti-dot"></span>「他是正儿八经的讲，很正式，孩子看着好像没有那么有感觉，就是让他学习了的那种感觉」</span>
+      <span class="ti"><span class="ti-dot"></span>「就是有一种上当的感觉……你，我买你这个洋葱也是花了好几千的」</span>
+      <span class="ti"><span class="ti-dot"></span>「我想知道他到底学了什么？学到了什么？学了多少？能记住什么？」</span>
+    </div>
+  </div>
+
+  <div class="scroll-c" style="bottom:60px"><span>向下探索</span><div class="arr"></div></div>
+</section>
+
+<!-- Wavy separator -->
+<div class="sep">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" style="height:40px">
+    <path d="M0,20 Q150,0 300,20 Q450,40 600,20 Q750,0 900,20 Q1050,40 1200,20 L1200,40 L0,40Z" fill="#FEFDF9"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     S1 · 真实动机
+════════════════════════════════════════ -->
+<section id="s1">
+  <div class="wrap" style="position:relative">
+
+    <!-- Teal blob decoration -->
+    <div style="position:absolute;right:-20px;top:60px;width:200px;height:200px;border-radius:63% 37% 54% 46%/55% 48% 52% 45%;background:rgba(61,191,191,.1);pointer-events:none;z-index:0"></div>
+
+    <div class="rv" style="position:relative;z-index:1">
+      <div class="ch-n">01 · 真实动机</div>
+      <h2 class="ch-h">她们说「孩子喜欢」<br><span class="o">真正要的是「未来有用」</span></h2>
+      <p class="ch-s">直接问家长为什么买科学课，几乎都说「孩子感兴趣」。但深聊下去，每个人都藏着同一句没说出口的话——</p>
+    </div>
+
+    <!-- Chat bubbles -->
+    <div class="bubbles">
+      <div class="brow rv d1">
+        <div class="av" style="background:#3DBFBF">万</div>
+        <div class="bmsg">
+          <span class="b-brand" style="background:#3DBFBF">万物指南用户</span>
+          <div class="b-text">我就觉得他可以大概了解一下，有个概念就行……不是说让他为了校内学习提前学什么的。</div>
+          <div class="b-src">— 访谈 · 小学低年级家长</div>
+          <button class="play-btn" data-audio="./audio/v003.mp3">▶ 听原声</button>
+        </div>
+      </div>
+      <div class="brow right rv d2">
+        <div class="av" style="background:#4361EE">洋</div>
+        <div class="bmsg">
+          <span class="b-brand" style="background:#4361EE">从小学物理用户</span>
+          <div class="b-text">还是不想让他之后对理科失去兴趣，所以抓住从小应该掌握这个理科的黄金期，让他去早早的有所渗透。</div>
+          <div class="b-src">— 访谈 · 小学2年级家长</div>
+          <button class="play-btn" data-audio="./audio/v009.mp3">▶ 听原声</button>
+        </div>
+      </div>
+      <div class="brow rv d3">
+        <div class="av" style="background:#EC4899">妙</div>
+        <div class="bmsg">
+          <span class="b-brand" style="background:#EC4899">妙懂用户</span>
+          <div class="b-text">我就给他说的是帮你看嘛，<strong>看着玩</strong>。诶，他就没那么抵触。我怕他现在接触那种应试一点的，给他感觉是让他学，他又怕他排斥。</div>
+          <div class="b-src">— 访谈 · 小学1年级家长</div>
+          <button class="play-btn" data-audio="./audio/v060.mp3">▶ 听原声</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tension rv d2">
+      <div class="ts">
+        <div class="ts-ico">🎫</div>
+        <div class="ts-lbl">家长能说出口的</div>
+        <div class="ts-v t">孩子感兴趣</div>
+        <div class="ts-d">购买行为的触发器，也是家长能直接表达的答案</div>
+      </div>
+      <div class="ts-arr">→</div>
+      <div class="ts">
+        <div class="ts-ico">🎯</div>
+        <div class="ts-lbl">从未直接说出口的</div>
+        <div class="ts-v o">未来有用</div>
+        <div class="ts-d">初高中有底子、理科不陌生、培养科学思维——这才是真正在买的东西</div>
+      </div>
+    </div>
+
+    <div class="ibox teal rv d3">
+      <div class="il">研究发现</div>
+      <div class="ib">「<span class="t">学科启蒙</span>」这个词没有任何家长主动提起，但9个品牌的用户都在用不同的说法描述同一件事。这是一个被市场系统性<strong>低估</strong>的、真实存在的需求。</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--bg2)">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" style="height:40px">
+    <path d="M0,20 Q300,40 600,20 Q900,0 1200,20 L1200,0 L0,0Z" fill="var(--bg)"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     S2 · 购买决策
+════════════════════════════════════════ -->
+<section id="s2">
+  <div class="wrap">
+    <div class="rv">
+      <div class="ch-n">02 · 购买决策</div>
+      <h2 class="ch-h">每个品牌的入场券不同<br><span class="y">但都没解决同一个焦虑</span></h2>
+      <p class="ch-s">点击品牌查看原声。家长最终下单的理由五花八门，但几乎所有人都被同一个问题困住：买了之后，孩子真的能学到什么？</p>
+    </div>
+
+    <div class="brand-tabs rv d1">
+      <button class="bt on" data-brand="all">全部</button>
+      <button class="bt" data-brand="洋葱">从小学物理</button>
+      <button class="bt" data-brand="NB">NB实验室</button>
+      <button class="bt" data-brand="学而思">学而思/赛先生</button>
+      <button class="bt" data-brand="万物">万物指南</button>
+      <button class="bt" data-brand="妙懂">妙懂</button>
+    </div>
+
+    <div class="bcard-grid rv d2">
+
+      <div class="bcard" data-brand="洋葱">
+        <div class="bc-top">
+          <div class="bc-hdr">
+            <span class="bc-dot" style="background:#4361EE"></span>
+            <span class="bc-name">从小学物理（洋葱）</span>
+            <span class="bc-tag" style="background:#4361EE">17条原声</span>
+          </div>
+          <div class="bc-buy-lbl">📌 核心购买理由</div>
+          <div class="bc-buy">物理启蒙早布局；主讲老师哈佛光环；洋葱数学课带动加购</div>
+        </div>
+        <div class="bc-quotes">
+          <div class="bc-ql">用户原声</div>
+          <div class="bc-q">「在微信那个鸭妈那个直播，她比较推荐……然后没有再去其他地方了解，就是直接在视频号里面下单了。」</div>
+          <div class="bc-qs">— 访谈 · 直播间直接下单</div>
+          <button class="play-btn" data-audio="./audio/v023.mp3">▶ 听原声</button>
+          <div class="extra">
+            <div class="bc-q">「他好像是国外哈佛大学，应该是。名校的光环，就是觉得这个人还是挺信得过的。」</div>
+            <div class="bc-qs">— 访谈 · 老师信任驱动</div>
+            <div class="bc-q">「当时买洋葱学园的数学课的时候，推荐了这个物理课，我才买的。」</div>
+            <div class="bc-qs">— 访谈 · 交叉销售路径</div>
+          </div>
+        </div>
+        <button class="more-btn" onclick="toggleMore(this)">▾ 展开更多原声</button>
+      </div>
+
+      <div class="bcard" data-brand="NB">
+        <div class="bc-top">
+          <div class="bc-hdr">
+            <span class="bc-dot" style="background:#6366F1"></span>
+            <span class="bc-name">NB虚拟实验室</span>
+            <span class="bc-tag" style="background:#6366F1">9条原声</span>
+          </div>
+          <div class="bc-buy-lbl">📌 核心购买理由</div>
+          <div class="bc-buy">安全做危险实验；终身制低价；学校实验课太少，在家能补</div>
+        </div>
+        <div class="bc-quotes">
+          <div class="bc-ql">用户原声</div>
+          <div class="bc-q">「我当时买那个NB的时候是因为一个是它是也是永久的，反正就是放，时时不时的，如果需要了就可以点点。」</div>
+          <div class="bc-qs">— 访谈 · 永久制决策逻辑</div>
+          <button class="play-btn" data-audio="./audio/v029.mp3">▶ 听原声</button>
+          <div class="extra">
+            <div class="bc-q">「你一个班级上，每个班级四五十人，做实验的频次你可能就达不到了，在家玩虚拟实验，什么时候都可以玩。」</div>
+            <div class="bc-qs">— 访谈 · 学校实验不足</div>
+          </div>
+        </div>
+        <button class="more-btn" onclick="toggleMore(this)">▾ 展开更多原声</button>
+      </div>
+
+      <div class="bcard" data-brand="学而思">
+        <div class="bc-top">
+          <div class="bc-hdr">
+            <span class="bc-dot" style="background:#F59E0B"></span>
+            <span class="bc-name">学而思科学 / 赛先生</span>
+            <span class="bc-tag" style="background:#F59E0B">5条原声</span>
+          </div>
+          <div class="bc-buy-lbl">📌 核心购买理由</div>
+          <div class="bc-buy">真人老师能实时互动；北大博士背书；孩子自己要求报名</div>
+        </div>
+        <div class="bc-quotes">
+          <div class="bc-ql">用户原声</div>
+          <div class="bc-q">「他前边铺垫了很多的，说了很多的理科的打基础吧。包括以后国家关于理科人才的培养。家长这一方面需要关注的。」</div>
+          <div class="bc-qs">— 访谈 · 销售话术触动家长焦虑</div>
+          <div class="extra">
+            <div class="bc-q">「孩子喜欢，因为他就是玩呀。他自己要求的，他自己要求报。」</div>
+            <div class="bc-qs">— 访谈 · 孩子主动驱动购买</div>
+            <button class="play-btn" data-audio="./audio/v046.mp3">▶ 听原声</button>
+          </div>
+        </div>
+        <button class="more-btn" onclick="toggleMore(this)">▾ 展开更多原声</button>
+      </div>
+
+      <div class="bcard" data-brand="万物">
+        <div class="bc-top">
+          <div class="bc-hdr">
+            <span class="bc-dot" style="background:#3DBFBF"></span>
+            <span class="bc-name">万物指南 / 物理十分通</span>
+            <span class="bc-tag" style="background:#3DBFBF">10条原声</span>
+          </div>
+          <div class="bc-buy-lbl">📌 核心购买理由</div>
+          <div class="bc-buy">吴姥姥权威背书；化学稀缺性（市面唯一）；捆绑售卖被动购买</div>
+        </div>
+        <div class="bc-quotes">
+          <div class="bc-ql">用户原声</div>
+          <div class="bc-q">「化学好像市面上好像只有它有，好像有个化学好像，我家孩子也比较对化学挺感兴趣的，所以就买了。」</div>
+          <div class="bc-qs">— 访谈 · 学科稀缺性驱动</div>
+          <button class="play-btn" data-audio="./audio/v068.mp3">▶ 听原声</button>
+          <div class="extra">
+            <div class="bc-q">「你要是不买的话，它点到那它点不开，它会问你要。所以我就一块把三个学科都买了。」</div>
+            <div class="bc-qs">— 访谈 · 界面锁定驱动扩购</div>
+            <div class="bc-q">「如果它分开的话，估计我不会买它这个物理了。它物理化学是一起的……但没办法就只能一起买，好像是1800多。」</div>
+            <div class="bc-qs">— 访谈 · 捆绑销售带来隐性抵触</div>
+          </div>
+        </div>
+        <button class="more-btn" onclick="toggleMore(this)">▾ 展开更多原声</button>
+      </div>
+
+      <div class="bcard" data-brand="妙懂">
+        <div class="bc-top">
+          <div class="bc-hdr">
+            <span class="bc-dot" style="background:#EC4899"></span>
+            <span class="bc-name">妙懂</span>
+            <span class="bc-tag" style="background:#EC4899">9条原声</span>
+          </div>
+          <div class="bc-buy-lbl">📌 核心购买理由</div>
+          <div class="bc-buy">AR看着好玩；永久买断制；有题库</div>
+        </div>
+        <div class="bc-quotes">
+          <div class="bc-ql">用户原声</div>
+          <div class="bc-q">「说实话也他也没有什么特别的，当时他的宣传的点就是<strong>永久有效</strong>。」</div>
+          <div class="bc-qs">— 访谈 · 对产品差异化的真实评价</div>
+          <button class="play-btn" data-audio="./audio/v025.mp3">▶ 听原声</button>
+          <div class="extra">
+            <div class="bc-q">「买了小四门都买了，道法也买了，但孩子也不爱看，我也没去看。」</div>
+            <div class="bc-qs">— 访谈 · 购而不用的典型现象</div>
+          </div>
+        </div>
+        <button class="more-btn" onclick="toggleMore(this)">▾ 展开更多原声</button>
+      </div>
+
+    </div><!-- /bcard-grid -->
+
+    <div class="ibox yellow rv" style="margin-top:28px">
+      <div class="il">跨品牌共同焦虑</div>
+      <div class="ib">「未来有用」是终极目标，但<span class="ybg">效果外化缺失</span>让这条路模糊不清。家长看不到孩子学到了什么，产生不确定性，最终打消下单或续费。</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--bg)">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" style="height:40px">
+    <path d="M0,20 Q300,0 600,20 Q900,40 1200,20 L1200,0 L0,0Z" fill="var(--bg2)"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     S3 · 痛点
+════════════════════════════════════════ -->
+<section id="s3">
+  <div class="wrap">
+    <div class="rv">
+      <div class="ch-n">03 · 共性痛点</div>
+      <h2 class="ch-h"><span class="r">5个品牌</span>，一个共同的投诉</h2>
+      <p class="ch-s">竞品各有不同的形态和卖点，但用户反馈惊人地相似——</p>
+    </div>
+
+    <!-- Pink blob -->
+    <div style="position:absolute;left:-30px;top:200px;width:160px;height:160px;border-radius:37% 63% 47% 53%/44% 52% 48% 56%;background:rgba(255,77,139,.08);pointer-events:none;z-index:0"></div>
+
+    <div class="big-pain rv d1">
+      <div class="bp-lbl">跨品牌共性投诉</div>
+      <div class="bp-t">「孩子听不懂，太学术了<br>不是小孩子的语言」</div>
+      <div class="bp-n">以下 5 条原声，来自 5 个不同品牌的用户</div>
+    </div>
+
+    <div class="qwall rv d2">
+      <div class="qw">
+        <div class="qw-brand" style="color:#EC4899">妙懂</div>
+        <div class="qw-t">「他是正儿八经的讲，很正式，孩子看着好像没有那么有感觉，就是让他学习了的那种感觉。」</div>
+        <div class="qw-s">— 访谈</div>
+        <button class="play-btn" data-audio="./audio/v078.mp3">▶ 听原声</button>
+      </div>
+      <div class="qw">
+        <div class="qw-brand" style="color:#F59E0B">赛先生</div>
+        <div class="qw-t">「讲解就包括理论讲解上，孩子不是很明白，他没有用孩子通俗易懂的话语再去讲解，孩子理解得不够透。」</div>
+        <div class="qw-s">— 访谈</div>
+      </div>
+      <div class="qw">
+        <div class="qw-brand" style="color:#4361EE">从小学物理</div>
+        <div class="qw-t">「很多时候有一些对孩子来讲，一些晦涩难懂的概念词，孩子还是不能很好的理解，如果说能根据这个概念进行口语化就更好了。」</div>
+        <div class="qw-s">— 访谈</div>
+      </div>
+      <div class="qw">
+        <div class="qw-brand" style="color:#6366F1">NB实验室</div>
+        <div class="qw-t">「NB实验室因为没有讲解、没有辅助，主要是更多的是自己去线上动手操作，家长在旁边会多一些。」</div>
+        <div class="qw-s">— 访谈</div>
+      </div>
+      <div class="qw" style="grid-column:1/-1">
+        <div class="qw-brand" style="color:#3DBFBF">万物指南</div>
+        <div class="qw-t">「我想知道他到底学了什么东西？学到了什么东西？学了多少？能记住什么？主要是能记住什么？就特别简单，我都不知道孩子学的到底是怎么个情况。」</div>
+        <div class="qw-s">— 访谈</div>
+      </div>
+    </div>
+
+    <div class="tags rv d3">
+      <div class="ptag">晦涩词语孩子不能理解</div>
+      <div class="ptag">没用孩子的语言讲解</div>
+      <div class="ptag">缺少讲解和引导</div>
+      <div class="ptag">正式得像在上课</div>
+      <div class="ptag">不知道孩子吸收了多少</div>
+    </div>
+
+    <div class="ibox rose rv d4" style="margin-top:28px">
+      <div class="il">关键发现</div>
+      <div class="ib">续费与否的核心指标不是内容质量，而是「<strong>孩子是否愿意主动打开、能否真正听懂</strong>」。这一点，市面上没有产品真正做到。</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--bg3)">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" style="height:40px">
+    <path d="M0,10 Q200,40 400,15 Q600,0 800,20 Q1000,38 1200,15 L1200,0 L0,0Z" fill="var(--bg)"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     S4 · 洋葱机会
+════════════════════════════════════════ -->
+<section id="s4">
+  <div class="wrap" style="position:relative">
+
+    <!-- Orange blob -->
+    <div style="position:absolute;right:-20px;bottom:100px;width:180px;height:180px;border-radius:44% 56% 67% 33%/30% 45% 55% 70%;background:rgba(255,87,34,.08);pointer-events:none;z-index:0"></div>
+
+    <!-- Green blob -->
+    <div style="position:absolute;left:-30px;top:40%;width:140px;height:140px;border-radius:70% 30% 46% 54%/60% 44% 56% 40%;background:rgba(82,194,120,.1);pointer-events:none;z-index:0"></div>
+
+    <div class="rv" style="position:relative;z-index:1">
+      <div class="ch-n">04 · 洋葱机会</div>
+      <h2 class="ch-h">所有人的痛点<br><span class="o">是洋葱的护城河</span></h2>
+      <p class="ch-s">竞品被家长共同诟病的「不用孩子语言讲解」，恰好是洋葱积累的核心差异化能力——用户已经在用行动证明这一点。</p>
+    </div>
+
+    <div class="ev-q rv d1" style="position:relative;z-index:1">
+      <div class="ev-lbl">✦ 真实用户反馈</div>
+      <div class="ev-qt">「洋葱学园的从小学物理，如果说我不是不管的话，他每天他都会刷。他好像特别喜欢看那实验男做实验。他当成趣味里边学知识了。」</div>
+      <div class="ev-qs">— 访谈 · 从小学物理家长</div>
+      <button class="play-btn" data-audio="./audio/v045.mp3">▶ 听原声</button>
+    </div>
+
+    <div class="ev-q rv d2" style="position:relative;z-index:1;margin-top:14px">
+      <div class="ev-qt">「他看了之后他会考我，哎，妈妈，你知不知道怎么样？他就会把课上看的从小学物理那个视频，他会<strong>转化他自己的语言</strong>，他学到了他就会跟你去分享。」</div>
+      <div class="ev-qs">— 访谈 · 孩子主动输出，证明真学会了</div>
+    </div>
+
+    <div class="ev-q rv d3" style="position:relative;z-index:1;margin-top:14px">
+      <div class="ev-qt">「动画做的一直是你们的优势，做的是很好的。孩子喜欢，有人带着他学，就是给他讲，他也喜欢像听故事一样去听，然后他调动他五官，他就感兴趣。」</div>
+      <div class="ev-qs">— 访谈 · 动画 + 讲解方式认可</div>
+    </div>
+
+    <div class="opp-card rv d2" style="position:relative;z-index:1">
+      <h3 class="opp-h">「学科启蒙」需要以孩子的视角和口吻讲解——<br><span class="o">这正是竞品最大的缺口，也是洋葱的核心优势所在。</span></h3>
+      <p class="opp-b">很多家长同时购买多个竞品，每款承担不同角色。洋葱可以占住「<strong>学科启蒙课</strong>」这个定位——介于兴趣启蒙和正式提前学之间，成为「孩子能听懂的科学课」第一品牌。</p>
+    </div>
+
+    <div class="pillars" style="position:relative;z-index:1">
+      <div class="pillar rv d2"><div class="p-ico">👀</div><div class="p-nm">爱看</div><div class="p-d">孩子越感兴趣，启蒙越有效。让他们主动打开，而不是被催着学。</div></div>
+      <div class="pillar rv d3"><div class="p-ico">💡</div><div class="p-nm">听懂</div><div class="p-d">用孩子的语言讲抽象概念。竞品共性失败点，洋葱独特优势。</div></div>
+      <div class="pillar rv d4"><div class="p-ico">📈</div><div class="p-nm">有用</div><div class="p-d">让学习效果「看得见」。解决家长最深层的不确定感。</div></div>
+    </div>
+
+    <div class="honest rv" style="position:relative;z-index:1">
+      <div class="honest-lbl">⚠️ 同时：用户对洋葱的真实投诉</div>
+      <div class="honest-q">「既然你说了都能用，然后结果点这个收费，点那个收费……就是有一种<strong>上当的感觉</strong>，我买你这个洋葱也是花了好几千的。」</div>
+      <div class="honest-qs">— 访谈 · 大会员权益落差</div>
+      <button class="play-btn" data-audio="./audio/v054.mp3">▶ 听原声</button>
+      <div class="honest-q">「从小学物理，它是全部内容已经开放给你看了嘛，所以就没有那种动力去一个个去完成这样子喽。」</div>
+      <div class="honest-qs">— 访谈 · 全量开放反削弱学习驱动力</div>
+      <button class="play-btn" data-audio="./audio/v053.mp3">▶ 听原声</button>
+    </div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--bg2)">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none" style="height:40px">
+    <path d="M0,20 Q150,0 300,20 Q450,40 600,20 Q750,0 900,20 Q1050,40 1200,20 L1200,0 L0,0Z" fill="var(--bg3)"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     S5 · 下一步
+════════════════════════════════════════ -->
+<section id="s5">
+  <div class="wrap">
+    <div class="rv">
+      <div class="ch-n">05 · 下一步</div>
+      <h2 class="ch-h">还差最后一步<br><span class="t">让家长看到效果</span></h2>
+      <p class="ch-s">洋葱拥有最大的机会，但目前效果外化还不够。以下是最值得优先投入的方向，每一条都有用户在催促。</p>
+    </div>
+
+    <div class="actions">
+      <div class="ai rv d1">
+        <div class="an">1</div>
+        <div style="flex:1">
+          <div class="ah">聚焦目标人群：1–4年级小低 / 小中家长</div>
+          <div class="ab">这一阶段家长有明确的「学科打底」焦虑，尚未锁定固定产品，竞争窗口最大。</div>
+          <div class="ai-q">「我想的就是让他不排斥，就是他印象里面有这个东西，他就更感兴趣去学，就学的容易一些。」— 访谈</div>
+        </div>
+      </div>
+      <div class="ai rv d2">
+        <div class="an">2</div>
+        <div style="flex:1">
+          <div class="ah">占位「学科启蒙课」，而非「兴趣科学课」</div>
+          <div class="ab">家长同时购买多产品，每款承担不同角色。洋葱应占住「学科启蒙」位置，和 NB/妙懂/学而思在差异化维度竞争。</div>
+          <div class="ai-q">「等到他真正学物理的时候，他可以大概知道了，不至于一点都不懂，比其他同学就可以提前知道一些东西，他就可以到时候更加好吸收老师讲的。」— 访谈</div>
+        </div>
+      </div>
+      <div class="ai rv d3">
+        <div class="an">3</div>
+        <div style="flex:1">
+          <div class="ah">效果外化：让学习进度看得见、摸得着</div>
+          <div class="ab">从「学了几节课」升级到「掌握了哪些概念、做题正确率如何」，是最直接的续费转化杠杆。</div>
+          <div class="ai-q">「我想知道他到底学了什么东西？学到了什么东西？学了多少？能记住什么？主要是能记住什么？」— 访谈</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <span class="st" style="position:relative;font-size:18px;animation-delay:0s">⭐</span>
+  <div class="ft" style="margin-top:8px">洋葱学园 · 用户研究团队</div>
+  <p>竞品学科启蒙课用户研究 · 2025 · 内部保密资料，请勿外传</p>
+</footer>
+
+
+<script>
+// ── Progress ──────────────────────────────────────────────────
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  prog.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'
+},{passive:true});
+
+// ── Reveal ────────────────────────────────────────────────────
+const rvo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>rvo.observe(el));
+
+// ── Chapter nav ───────────────────────────────────────────────
+const secs=['s0','s1','s2','s3','s4','s5'];
+const dots=document.querySelectorAll('.dot');
+function go(i){document.getElementById(secs[i]).scrollIntoView({behavior:'smooth'})}
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=secs.indexOf(e.target.id);if(i!==-1){dots.forEach(d=>d.classList.remove('on'));dots[i].classList.add('on')}}}),{threshold:.4});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)so.observe(el)});
+
+// ── Counters ──────────────────────────────────────────────────
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=+e.target.dataset.t;let c=0;const s=t/45;const ti=setInterval(()=>{c=Math.min(c+s,t);e.target.textContent=Math.round(c);if(c>=t)clearInterval(ti)},25);co.unobserve(e.target)}),{threshold:.6});
+document.querySelectorAll('.cnt').forEach(el=>co.observe(el));
+
+// ── Brand filter ──────────────────────────────────────────────
+document.querySelectorAll('.bt').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.bt').forEach(b=>b.classList.remove('on'));
+    this.classList.add('on');
+    const brand=this.dataset.brand;
+    document.querySelectorAll('.bcard').forEach(card=>{
+      card.style.display=(brand==='all'||card.dataset.brand===brand)?'':'none';
+    });
+  });
+});
+
+// ── More quotes ───────────────────────────────────────────────
+// ── Audio player ──
+(function(){
+  let curAud=null,curBtn=null;
+  document.querySelectorAll('.play-btn[data-audio]').forEach(function(btn){
+    var src=btn.dataset.audio,aud=null;
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!aud){
+        aud=new Audio(src);
+        aud.addEventListener('ended',function(){
+          btn.innerHTML='▶ 听原声';
+          btn.classList.remove('playing');
+          if(curBtn===btn){curAud=null;curBtn=null;}
+        });
+      }
+      if(curAud&&curAud!==aud){
+        curAud.pause();curAud.currentTime=0;
+        curBtn.innerHTML='▶ 听原声';curBtn.classList.remove('playing');
+      }
+      if(aud.paused){
+        aud.play();
+        btn.innerHTML='<span class="wv"><span></span><span></span><span></span></span> 播放中';
+        btn.classList.add('playing');
+        curAud=aud;curBtn=btn;
+      }else{
+        aud.pause();
+        btn.innerHTML='▶ 听原声';
+        btn.classList.remove('playing');
+        curAud=null;curBtn=null;
+      }
+    });
+  });
+})();
+
+function toggleMore(btn){
+  const extra=btn.closest('.bcard').querySelector('.extra');
+  if(!extra)return;
+  const open=extra.classList.toggle('open');
+  btn.textContent=open?'▴ 收起':'▾ 展开更多原声';
+}
+</script>
+</body>
+</html>

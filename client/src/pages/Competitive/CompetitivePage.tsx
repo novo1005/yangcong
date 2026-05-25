@@ -19,7 +19,7 @@ const L1_ORDER = ['启蒙认知', '购买决策', '产品体验'];
 const L1_CONFIG: Record<string, { color: string; bg: string; border: string; text: string }> = {
   启蒙认知: { color: '#8B5CF6', bg: 'bg-purple-50', border: 'border-purple-100', text: 'text-purple-700' },
   购买决策: { color: '#F59E0B', bg: 'bg-amber-50', border: 'border-amber-100', text: 'text-amber-700' },
-  产品体验: { color: '#4361EE', bg: 'bg-blue-50', border: 'border-blue-100', text: 'text-blue-700' },
+  产品体验: { color: '#3DBFBF', bg: 'bg-teal-50', border: 'border-teal-100', text: 'text-teal-700' },
 };
 
 const SENTIMENT_CONFIG = {
@@ -85,7 +85,7 @@ const CROSS_BRAND_CONCLUSIONS: { text: string; color: string }[] = [
   },
   {
     text: '权益透明度是购买信任的关键门槛——洋葱大会员边界不清、叫叫隐性附加收费、学而思教具拉高门槛，均使家长产生"上当感"；反之，NB 终身制低价和万物指南"永久题库"则被高度认可。',
-    color: '#4361EE',
+    color: '#FF5722',
   },
   {
     text: '孩子主动参与是续费最强信号——无论哪个品牌，家长续费的核心依据是"孩子愿意自己打开"；产品能否将初始兴趣转化为孩子的自主学习习惯，是留存决策的决定性因素。',
@@ -119,14 +119,14 @@ function CrossBrandOverview() {
   const brands = Object.keys(DEFAULT_COMPETITIVE_DATA).sort();
 
   return (
-    <div className="rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6 bg-white">
+    <div className="rounded-2xl border border-[#E8E2D9] shadow-[3px_4px_0_rgba(0,0,0,0.06)] overflow-hidden mb-6 bg-white">
       {/* Header */}
       <button
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center gap-2.5 px-6 py-4 text-left hover:bg-gray-50/60 transition-colors"
       >
-        <div className="w-6 h-6 rounded-lg bg-[#4361EE]/10 flex items-center justify-center shrink-0">
-          <Layers size={12} className="text-[#4361EE]" />
+        <div className="w-6 h-6 rounded-lg bg-[#FF5722]/10 flex items-center justify-center shrink-0">
+          <Layers size={12} className="text-[#FF5722]" />
         </div>
         <span className="text-[14px] font-bold text-gray-900 flex-1">跨品牌洞察</span>
         <span className="text-[11px] text-gray-400 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded-full mr-2">
@@ -597,7 +597,7 @@ export default function CompetitivePage() {
       {/* Top bar */}
       <div className="bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2 shrink-0">
-          <BarChart2 size={16} className="text-[#4361EE]" />
+          <BarChart2 size={16} className="text-[#FF5722]" />
           <h2 className="text-[15px] font-bold text-gray-900">竞品分析</h2>
         </div>
 

@@ -14,7 +14,7 @@ export default function AppLayout() {
   }
 
   return (
-    <div className="flex h-screen bg-[#F4F5F7] overflow-hidden">
+    <div className="flex h-screen bg-[#F7F5EF] overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <FileBar />

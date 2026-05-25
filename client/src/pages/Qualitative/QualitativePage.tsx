@@ -16,7 +16,7 @@ const DIMENSIONS = ['启蒙认知', '购买决策', '产品体验'] as const;
 type Dimension = (typeof DIMENSIONS)[number];
 
 const DIM_CONFIG: Record<Dimension, { color: string; tab: string }> = {
-  启蒙认知: { color: '#4361EE', tab: 'border-[#4361EE] text-[#4361EE]' },
+  启蒙认知: { color: '#FF5722', tab: 'border-[#FF5722] text-[#FF5722]' },
   购买决策: { color: '#D97706', tab: 'border-amber-500 text-amber-600' },
   产品体验: { color: '#2563EB', tab: 'border-blue-500 text-blue-600' },
 };
@@ -32,7 +32,7 @@ const BRAND_COLORS: Record<string, string> = {
   '叫叫':            '#34D399',
   '赛先生科学课':    '#10B981',
   '南开大学AI物理课':'#F97316',
-  '从小学物理':      '#4361EE',
+  '从小学物理':      '#FF5722',
 };
 
 function brandColor(brand: string) {
@@ -100,7 +100,7 @@ function BrandCard({ entry }: { entry: QualBrandEntry }) {
   if (allEvidence.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl border border-[#E8E2D9] shadow-[3px_4px_0_rgba(0,0,0,0.06)] overflow-hidden">
       {/* Top brand color bar */}
       <div className="h-1 w-full" style={{ backgroundColor: bColor }} />
 
@@ -245,10 +245,10 @@ export default function QualitativePage() {
   return (
     <div className="flex flex-col h-full">
       {/* Top bar */}
-      <div className="bg-white border-b border-gray-100 px-6 pt-4 pb-0">
+      <div className="bg-[#FEFDF9] border-b border-[#E8E2D9] px-6 pt-4 pb-0">
         <div className="flex items-center gap-3 mb-3 flex-wrap">
           <div className="flex items-center gap-2 shrink-0">
-            <MessageSquare size={15} className="text-[#4361EE]" />
+            <MessageSquare size={15} className="text-[#FF5722]" />
             <h2 className="text-[15px] font-bold text-gray-900">定性洞察</h2>
           </div>
 

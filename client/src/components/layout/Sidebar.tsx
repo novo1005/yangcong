@@ -27,10 +27,10 @@ export default function Sidebar() {
   const currentProject = projects.find((p) => p.id === projectId);
 
   return (
-    <aside className="w-[220px] shrink-0 flex flex-col h-full bg-white border-r border-gray-100">
+    <aside className="w-[220px] shrink-0 flex flex-col h-full bg-[#FEFDF9] border-r border-[#E8E2D9]">
       {/* Logo */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-[#4361EE] flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-[#FF5722] flex items-center justify-center shrink-0">
           <Microscope size={16} className="text-white" />
         </div>
         <span className="font-bold text-[15px] text-gray-900 tracking-tight">用研平台</span>
@@ -68,7 +68,7 @@ export default function Sidebar() {
                 }}
                 className={cn(
                   'w-full text-left px-4 py-2.5 text-[13px] hover:bg-gray-50 transition-colors',
-                  p.id === projectId ? 'text-[#4361EE] font-semibold bg-blue-50/50' : 'text-gray-700',
+                  p.id === projectId ? 'text-[#FF5722] font-semibold bg-orange-50/60' : 'text-gray-700',
                 )}
               >
                 {p.name}
@@ -103,14 +103,14 @@ export default function Sidebar() {
                 cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all',
                   isActive
-                    ? 'bg-[#4361EE]/10 text-[#4361EE]'
+                    ? 'bg-[#FF5722]/10 text-[#FF5722]'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon size={16} className={isActive ? 'text-[#4361EE]' : 'text-gray-400'} />
+                  <Icon size={16} className={isActive ? 'text-[#FF5722]' : 'text-gray-400'} />
                   {label}
                 </>
               )}
@@ -123,7 +123,7 @@ export default function Sidebar() {
       <div className="px-3 pb-5">
         <button
           onClick={() => navigate('/projects')}
-          className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-dashed border-gray-200 text-[12px] text-gray-400 hover:border-[#4361EE] hover:text-[#4361EE] transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-dashed border-gray-200 text-[12px] text-gray-400 hover:border-[#FF5722] hover:text-[#FF5722] transition-colors"
         >
           <Plus size={14} /> 新建 / 切换项目
         </button>
