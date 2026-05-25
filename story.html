@@ -126,6 +126,7 @@ section,header,footer,.ticker-wrap{position:relative;z-index:1}
 .scroll-c{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--mu);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:8px;animation:bob 2s ease-in-out infinite}
 .arr{width:18px;height:18px;border-right:2.5px solid var(--mu);border-bottom:2.5px solid var(--mu);transform:rotate(45deg)}
 @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+@keyframes bob2{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
 /* ══════════════════════════════════════════
    S1 · 真实动机
@@ -427,13 +428,15 @@ footer p{font-size:12px;color:var(--mu)}
     <div class="hero-tag">洋葱学园 · 竞品用户研究 · 2025</div>
     <h1 class="hero-h">从小学<span class="hl">用户调研</span></h1>
     <p class="hero-sub">家长们在买一个说不出口的东西</p>
-    <p class="hero-s">9个竞品，6组深度访谈，194条用户原声，<br>一个被所有人忽略的核心需求</p>
+    <p class="hero-s">9个竞品，6组深度访谈，<br>一个被所有人忽略的核心需求</p>
     <div class="stats">
       <div class="stat"><div class="stn cnt" data-t="9">0</div><div class="stu">竞品品牌</div></div>
       <div class="stat"><div class="stn cnt" data-t="6">0</div><div class="stu">深度访谈</div></div>
       <div class="stat"><div class="stn cnt" data-t="194">0</div><div class="stu">用户原声</div></div>
     </div>
   </div>
+
+  <div class="scroll-c" style="position:relative;bottom:auto;left:auto;transform:none;animation:bob2 2s ease-in-out infinite;margin:20px auto 28px"><span>向下探索</span><div class="arr"></div></div>
 
   <!-- Orange quote ticker -->
   <div class="ticker-wrap">
@@ -456,8 +459,6 @@ footer p{font-size:12px;color:var(--mu)}
       <span class="ti"><span class="ti-dot"></span>「我想知道他到底学了什么？学到了什么？学了多少？能记住什么？」</span>
     </div>
   </div>
-
-  <div class="scroll-c" style="bottom:60px"><span>向下探索</span><div class="arr"></div></div>
 </section>
 
 <!-- Wavy separator -->
