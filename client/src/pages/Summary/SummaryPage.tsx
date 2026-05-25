@@ -1,88 +1,90 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { MessageSquare, BarChart2, BarChart3, ChevronLeft } from 'lucide-react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Microscope } from 'lucide-react';
 
-/**
- * 项目总结页 — 全屏展示数据新闻叙事报告（story.html）
- * 浮动导航栏提供前往其他分析模块的入口
- */
+const NAV_ITEMS = [
+  { label: '项目总结',  path: 'summary' },
+  { label: '定性洞察',  path: 'qualitative' },
+  { label: '竞品分析',  path: 'competitive' },
+  { label: '定量报告',  path: 'quantitative' },
+] as const;
+
 export default function SummaryPage() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const [navOpen, setNavOpen] = React.useState(false);
+  const location = useLocation();
+
+  const active = location.pathname.split('/').pop() ?? 'summary';
 
   return (
-    <div className="fixed inset-0 bg-[#FEFDF9]">
-      {/* Full-screen iframe */}
+    <div className="fixed inset-0 flex flex-col" style={{ background: '#FEFDF9' }}>
+      {/* ── Top nav bar ── */}
+      <nav
+        className="shrink-0 flex items-center gap-1 px-5"
+        style={{
+          height: 48,
+          background: '#FEFDF9',
+          borderBottom: '1.5px solid #E8E2D9',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        }}
+      >
+        {/* Logo */}
+        <div
+          className="flex items-center gap-2 mr-5 shrink-0"
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/projects')}
+        >
+          <div
+            className="w-7 h-7 rounded-lg flex items-center justify-center"
+            style={{ background: '#FF5722' }}
+          >
+            <Microscope size={14} color="white" />
+          </div>
+          <span style={{ fontSize: 14, fontWeight: 800, color: '#2A2A2A', letterSpacing: '-0.3px' }}>
+            用研平台
+          </span>
+        </div>
+
+        {/* Nav items */}
+        <div className="flex items-center gap-0.5">
+          {NAV_ITEMS.map(({ label, path }) => {
+            const isActive = active === path;
+            return (
+              <button
+                key={path}
+                onClick={() => navigate(`/projects/${projectId}/${path}`)}
+                className="relative px-4 flex items-center transition-colors"
+                style={{
+                  height: 48,
+                  fontSize: 13,
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? '#FF5722' : '#666',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  letterSpacing: '0.1px',
+                }}
+              >
+                {label}
+                {/* Active underline */}
+                {isActive && (
+                  <span
+                    className="absolute bottom-0 left-3 right-3 rounded-t-full"
+                    style={{ height: 2.5, background: '#FF5722' }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* ── story.html full remaining height ── */}
       <iframe
         src="/story.html"
         title="竞品用户研究叙事报告"
-        className="w-full h-full border-0"
+        style={{ flex: 1, border: 'none', display: 'block', minHeight: 0 }}
       />
-
-      {/* Floating nav trigger */}
-      <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2">
-        {navOpen && (
-          <div
-            className="flex flex-col gap-1.5 bg-white rounded-2xl border border-[#E8E2D9] p-2"
-            style={{ boxShadow: '3px 4px 0 rgba(0,0,0,0.1)' }}
-          >
-            <NavBtn
-              icon={<MessageSquare size={13} />}
-              label="定性洞察"
-              onClick={() => navigate(`/projects/${projectId}/qualitative`)}
-            />
-            <NavBtn
-              icon={<BarChart2 size={13} />}
-              label="竞品分析"
-              onClick={() => navigate(`/projects/${projectId}/competitive`)}
-            />
-            <NavBtn
-              icon={<BarChart3 size={13} />}
-              label="定量报告"
-              onClick={() => navigate(`/projects/${projectId}/quantitative`)}
-            />
-            <div className="h-px bg-[#E8E2D9] mx-1 my-0.5" />
-            <NavBtn
-              icon={<ChevronLeft size={13} />}
-              label="项目列表"
-              onClick={() => navigate('/projects')}
-            />
-          </div>
-        )}
-
-        <button
-          onClick={() => setNavOpen((v) => !v)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-[13px] font-bold transition-all"
-          style={{
-            background: '#FF5722',
-            boxShadow: '3px 4px 0 rgba(255,87,34,0.35)',
-          }}
-        >
-          <span style={{ fontSize: 16 }}>🔬</span>
-          {navOpen ? '收起' : '分析模块'}
-        </button>
-      </div>
     </div>
-  );
-}
-
-function NavBtn({
-  icon,
-  label,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13px] font-medium text-gray-700 hover:bg-[#FF5722]/10 hover:text-[#FF5722] transition-colors text-left w-full"
-    >
-      <span className="text-gray-400">{icon}</span>
-      {label}
-    </button>
   );
 }
