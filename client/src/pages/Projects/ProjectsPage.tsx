@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 
 const CATEGORIES = ['新课定位', '用户画像', '产品功能', '用户体验'];
 const METHODS    = ['桌面研究', '定量调研', '定性调研'];
-const TEAMS      = ['策略', '销售', 'BI', '产品', '课程', '新媒体'];
 const STATUSES   = ['进行中', '已完成', '部分完成'];
 
 const METHOD_COLOR: Record<string, string> = {
@@ -71,7 +70,6 @@ export default function ProjectsPage() {
 
   const [filterCat,    setFilterCat]    = React.useState<Set<string>>(new Set());
   const [filterMethod, setFilterMethod] = React.useState<Set<string>>(new Set());
-  const [filterTeam,   setFilterTeam]   = React.useState<Set<string>>(new Set());
   const [filterStatus, setFilterStatus] = React.useState<Set<string>>(new Set());
 
   React.useEffect(() => {
@@ -86,7 +84,6 @@ export default function ProjectsPage() {
 
   const filtered = projects.filter((p) => {
     if (filterCat.size    && !filterCat.has(p.category ?? ''))              return false;
-    if (filterTeam.size   && !p.team?.some((t) => filterTeam.has(t)))       return false;
     if (filterMethod.size && !p.methods?.some((m) => filterMethod.has(m)))  return false;
     if (filterStatus.size && !filterStatus.has(p.status ?? ''))             return false;
     return true;
@@ -108,7 +105,7 @@ export default function ProjectsPage() {
     toast.success('项目已删除');
   };
 
-  const anyFilter = filterCat.size + filterMethod.size + filterTeam.size + filterStatus.size > 0;
+  const anyFilter = filterCat.size + filterMethod.size + filterStatus.size > 0;
 
   return (
     <div className="flex flex-1 overflow-hidden bg-[#F4F5F7]">
@@ -117,7 +114,7 @@ export default function ProjectsPage() {
         <aside className="w-[188px] shrink-0 border-r border-gray-200 bg-white px-3 py-5 flex flex-col gap-5 overflow-y-auto">
           {anyFilter && (
             <button
-              onClick={() => { setFilterCat(new Set()); setFilterMethod(new Set()); setFilterTeam(new Set()); setFilterStatus(new Set()); }}
+              onClick={() => { setFilterCat(new Set()); setFilterMethod(new Set()); setFilterStatus(new Set()); }}
               className="text-[11px] text-orange-500 font-medium hover:underline text-left"
             >
               清除筛选
@@ -134,12 +131,6 @@ export default function ProjectsPage() {
             options={METHODS}
             selected={filterMethod}
             onToggle={(v) => toggle(filterMethod, v, setFilterMethod)}
-          />
-          <FilterSection
-            title="协同团队"
-            options={TEAMS}
-            selected={filterTeam}
-            onToggle={(v) => toggle(filterTeam, v, setFilterTeam)}
           />
           <FilterSection
             title="项目状态"
